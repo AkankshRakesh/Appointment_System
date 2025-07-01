@@ -30,7 +30,6 @@ A full-stack appointment booking application built with Next.js, React, and Type
 - ✅ **Calendar Sync**: Simulated email/calendar invites (console logs)
 - ✅ **CSV Export**: Download all bookings as CSV file
 - ✅ **Live Updates**: Auto-refresh every 30 seconds
-- ✅ **Basic Tests**: Jest test cases for critical API functions
 
 ## 🛠️ Technology Stack
 
@@ -38,7 +37,6 @@ A full-stack appointment booking application built with Next.js, React, and Type
 - **Styling**: Tailwind CSS, shadcn/ui components
 - **Backend**: Next.js API Routes
 - **Data Storage**: In-memory (JavaScript objects)
-- **Testing**: Jest, React Testing Library
 - **Date Handling**: date-fns
 - **Icons**: Lucide React
 
