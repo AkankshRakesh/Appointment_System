@@ -43,30 +43,43 @@ A full-stack appointment booking application built with Next.js, React, and Type
 ## 📁 Project Structure
 
 ```
-appointment-booking-system/
-├── app/
-│   ├── api/
-│   │   ├── bookings/
-│   │   │   ├── route.ts          # GET, POST /api/bookings
-│   │   │   └── [id]/route.ts     # PATCH /api/bookings/:id
-│   │   └── slots/
-│   │       └── route.ts          # GET /api/slots
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx                  # Main application page
-├── components/
-│   ├── ui/                       # shadcn/ui components
-│   ├── customer-booking.tsx      # Customer booking interface
-│   └── client-dashboard.tsx      # Admin dashboard
-├── lib/
-│   └── data.ts                   # Data management & business logic
-├── __tests__/
-│   └── api/
-│       └── bookings.test.js      # API tests
-├── jest.config.js
-├── jest.setup.js
-├── package.json
-└── README.md
+Directory structure:
+└── appointment_system/
+    ├── README.md
+    ├── components.json
+    ├── jest.config.js
+    ├── jest.setup.js
+    ├── next.config.mjs
+    ├── package.json
+    ├── pnpm-lock.yaml
+    ├── postcss.config.mjs
+    ├── tailwind.config.ts
+    ├── tsconfig.json
+    ├── app/
+    │   ├── globals.css
+    │   ├── layout.tsx
+    │   ├── page.tsx
+    │   └── api/
+    │       ├── bookings/
+    │       │   ├── route.ts
+    │       │   └── [id]/
+    │       │       └── route.ts
+    │       └── slots/
+    │           └── route.ts
+    ├── components/
+    │   ├── client-dashboard.tsx
+    │   ├── customer-booking.tsx
+    │   └── theme-provider.tsx
+    ├── hooks/
+    │   ├── use-mobile.tsx
+    │   └── use-toast.ts
+    ├── lib/
+    │   ├── data.ts
+    │   └── utils.ts
+    ├── storage/
+    │   └── bookings.json
+    └── styles/
+        └── globals.css
 ```
 
 ## 🚦 Getting Started
