@@ -2,7 +2,7 @@
 
 A full-stack appointment booking application built with Next.js, React, and TypeScript. This system allows customers to book appointments and business owners to manage their bookings efficiently.
 
-## 🚀 Features
+## Features
 
 ### Customer Side
 - ✅ View available appointment slots for the week
