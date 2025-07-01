@@ -237,6 +237,3 @@ This project demonstrates:
 - **Documentation**: Clear README and code comments
 
 ---
-
-Built with ❤️ for BloorTech Engineering Assessment
-```
