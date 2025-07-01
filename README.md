@@ -44,7 +44,7 @@ A full-stack appointment booking application built with Next.js, React, and Type
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 appointment-booking-system/
 ├── app/
 │   ├── api/
@@ -69,7 +69,7 @@ appointment-booking-system/
 ├── jest.setup.js
 ├── package.json
 └── README.md
-\`\`\`
+```
 
 ## 🚦 Getting Started
 
@@ -81,8 +81,8 @@ appointment-booking-system/
 
 1. **Clone the repository**
    \`\`\`bash
-   git clone <repository-url>
-   cd appointment-booking-system
+   git clone https://github.com/AkankshRakesh/Appointment_System
+   cd appointment_system
    \`\`\`
 
 2. **Install dependencies**
