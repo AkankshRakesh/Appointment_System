@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, Calendar, Clock, CheckCircle, AlertCircle } from "lucide-react"
-import { format, parseISO } from "date-fns"
+import { addDays, endOfDay, format, isAfter, isBefore, parseISO } from "date-fns"
 
 interface TimeSlot {
   id: string
@@ -40,15 +40,29 @@ export default function CustomerBooking() {
     fetchSlots()
   }, [])
 
-  const fetchSlots = async () => {
-    try {
-      const response = await fetch("/api/slots")
-      const data = await response.json()
-      setSlots(data)
-    } catch (error) {
-      console.error("Failed to fetch slots:", error)
-    }
+
+const fetchSlots = async () => {
+  try {
+    const response = await fetch("/api/slots")
+    const data: TimeSlot[] = await response.json()
+
+    const now = new Date()
+    const endOf7thDay = endOfDay(addDays(now, 7)) // includes full 7th day (until 11:59 PM)
+
+    const upcomingSlots = data
+      .filter((slot) => {
+        const slotDate = parseISO(slot.datetime)
+        return isAfter(slotDate, now) && isBefore(slotDate, endOf7thDay)
+      })
+      .sort((a, b) => parseISO(a.datetime).getTime() - parseISO(b.datetime).getTime())
+
+    setSlots(upcomingSlots)
+  } catch (error) {
+    console.error("Failed to fetch slots:", error)
   }
+}
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

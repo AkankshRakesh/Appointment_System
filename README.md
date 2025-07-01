@@ -1,4 +1,4 @@
-# 📅 Appointment Booking System
+# 📅 BookHub
 
 A full-stack appointment booking application built with Next.js, React, and TypeScript. This system allows customers to book appointments and business owners to manage their bookings efficiently.
 

@@ -1,4 +1,6 @@
-import { addDays, format, startOfWeek, setHours, setMinutes } from "date-fns"
+import fs from "fs"
+import path from "path"
+import { addDays, format, setHours, setMinutes } from "date-fns"
 
 export interface TimeSlot {
   id: string
@@ -17,22 +19,21 @@ export interface Booking {
   createdAt: string
 }
 
-// In-memory storage
-let timeSlots: TimeSlot[] = []
-const bookings: Booking[] = []
+// ----------- File paths -----------
+const BOOKINGS_FILE = path.join(process.cwd(), "storage", "bookings.json")
 
-// Initialize time slots for the week (Monday to Friday, 9 AM to 5 PM, 30-minute intervals)
+// ----------- In-memory timeslot (generated fresh) -----------
+let timeSlots: TimeSlot[] = []
+
 function initializeTimeSlots() {
-  if (timeSlots.length > 0) return // Already initialized
+  if (timeSlots.length > 0) return
 
   const slots: TimeSlot[] = []
-  const startOfCurrentWeek = startOfWeek(new Date(), { weekStartsOn: 1 }) // Monday
+  const today = new Date()
 
-  // Generate slots for Monday to Friday
-  for (let dayOffset = 0; dayOffset < 5; dayOffset++) {
-    const currentDay = addDays(startOfCurrentWeek, dayOffset)
+  for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+    const currentDay = addDays(today, dayOffset)
 
-    // 9 AM to 5 PM (17:00), 30-minute intervals
     for (let hour = 9; hour < 17; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
         const slotTime = setMinutes(setHours(currentDay, hour), minute)
@@ -47,13 +48,28 @@ function initializeTimeSlots() {
   }
 
   timeSlots = slots
-  console.log(`✅ Initialized ${slots.length} time slots for the week`)
 }
 
-// Initialize on module load
-initializeTimeSlots()
+// ----------- File helpers -----------
+function readBookings(): Booking[] {
+  try {
+    const data = fs.readFileSync(BOOKINGS_FILE, "utf-8")
+    return JSON.parse(data) as Booking[]
+  } catch (err) {
+    console.error("❌ Failed to read bookings:", err)
+    return []
+  }
+}
+
+function writeBookings(bookings: Booking[]) {
+  fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2))
+}
+
+// ----------- Public APIs -----------
 
 export function getTimeSlots(): TimeSlot[] {
+  const bookings = readBookings()
+
   return timeSlots.map((slot) => ({
     ...slot,
     available: !bookings.some((booking) => booking.slotId === slot.id && booking.status !== "denied"),
@@ -61,7 +77,9 @@ export function getTimeSlots(): TimeSlot[] {
 }
 
 export function getBookings(): Booking[] {
-  return [...bookings].sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime())
+  return readBookings().sort(
+    (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime(),
+  )
 }
 
 export function createBooking(data: {
@@ -70,19 +88,14 @@ export function createBooking(data: {
   customerEmail: string
   reason: string
 }): { success: boolean; booking?: Booking; error?: string } {
-  // Find the slot
+  const bookings = readBookings()
+
   const slot = timeSlots.find((s) => s.id === data.slotId)
-  if (!slot) {
-    return { success: false, error: "Invalid time slot" }
-  }
+  if (!slot) return { success: false, error: "Invalid time slot" }
 
-  // Check if slot is already booked (not denied)
-  const existingBooking = bookings.find((b) => b.slotId === data.slotId && b.status !== "denied")
-  if (existingBooking) {
-    return { success: false, error: "Time slot is already booked" }
-  }
+  const existing = bookings.find((b) => b.slotId === data.slotId && b.status !== "denied")
+  if (existing) return { success: false, error: "Slot already booked" }
 
-  // Create new booking
   const booking: Booking = {
     id: `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     slotId: data.slotId,
@@ -95,6 +108,8 @@ export function createBooking(data: {
   }
 
   bookings.push(booking)
+  writeBookings(bookings)
+
   return { success: true, booking }
 }
 
@@ -102,54 +117,16 @@ export function updateBookingStatus(
   bookingId: string,
   status: "approved" | "denied",
 ): { success: boolean; booking?: Booking; error?: string } {
-  const bookingIndex = bookings.findIndex((b) => b.id === bookingId)
+  const bookings = readBookings()
+  const index = bookings.findIndex((b) => b.id === bookingId)
 
-  if (bookingIndex === -1) {
-    return { success: false, error: "Booking not found" }
-  }
+  if (index === -1) return { success: false, error: "Booking not found" }
 
-  bookings[bookingIndex].status = status
-  return { success: true, booking: bookings[bookingIndex] }
+  bookings[index].status = status
+  writeBookings(bookings)
+
+  return { success: true, booking: bookings[index] }
 }
 
-// Seed some sample data for demonstration
-export function seedSampleData() {
-  if (bookings.length > 0) return // Already seeded
-
-  const sampleBookings = [
-    {
-      slotId: timeSlots[0]?.id,
-      customerName: "John Doe",
-      customerEmail: "john.doe@example.com",
-      reason: "Initial consultation for web development project",
-    },
-    {
-      slotId: timeSlots[5]?.id,
-      customerName: "Jane Smith",
-      customerEmail: "jane.smith@example.com",
-      reason: "Follow-up meeting for mobile app design",
-    },
-    {
-      slotId: timeSlots[10]?.id,
-      customerName: "Mike Johnson",
-      customerEmail: "mike.johnson@example.com",
-      reason: "Technical discussion about API integration",
-    },
-  ]
-
-  sampleBookings.forEach((booking) => {
-    if (booking.slotId) {
-      createBooking(booking)
-    }
-  })
-
-  // Approve one booking for demonstration
-  if (bookings.length > 0) {
-    updateBookingStatus(bookings[0].id, "approved")
-  }
-
-  console.log(`✅ Seeded ${bookings.length} sample bookings`)
-}
-
-// Seed sample data on initialization
-seedSampleData()
+// ----------- Init on load -----------
+initializeTimeSlots()
