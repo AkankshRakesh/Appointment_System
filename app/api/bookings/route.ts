@@ -16,12 +16,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { slotId, customerName, customerEmail, reason } = body
 
-    // Validation
+    // validation
     if (!slotId || !customerName || !customerEmail || !reason) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(customerEmail)) {
       return NextResponse.json({ error: "Invalid email address" }, { status: 400 })
@@ -38,7 +37,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error }, { status: 400 })
     }
 
-    // Simulate calendar invite (log to console)
+    // simulate calendar invite (log to console)
     console.log(`📅 Calendar Invite Sent:
       To: ${customerEmail}
       Subject: Appointment Confirmation
