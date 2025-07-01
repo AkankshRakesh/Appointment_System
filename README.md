@@ -80,55 +80,55 @@ appointment-booking-system/
 ### Installation
 
 1. **Clone the repository**
-   \`\`\`bash
+   ```bash
    git clone https://github.com/AkankshRakesh/Appointment_System
    cd appointment_system
-   \`\`\`
+   ```
 
 2. **Install dependencies**
-   \`\`\`bash
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 3. **Run the development server**
-   \`\`\`bash
+   ```bash
    npm run dev
-   \`\`\`
+   ```
 
 4. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### Running Tests
-\`\`\`bash
+```bash
 # Run tests once
 npm test
 
 # Run tests in watch mode
 npm run test:watch
-\`\`\`
+```
 
 ### Building for Production
-\`\`\`bash
+```bash
 npm run build
 npm start
-\`\`\`
+```
 
 ## 📊 API Endpoints
 
 ### Get Available Time Slots
-\`\`\`
+```
 GET /api/slots
 Response: Array of time slots with availability status
-\`\`\`
+```
 
 ### Get All Bookings
-\`\`\`
+```
 GET /api/bookings
 Response: Array of all bookings sorted by date
-\`\`\`
+```
 
 ### Create New Booking
-\`\`\`
+```
 POST /api/bookings
 Body: {
   slotId: string,
@@ -137,19 +137,19 @@ Body: {
   reason: string
 }
 Response: Created booking object
-\`\`\`
+```
 
 ### Update Booking Status
-\`\`\`
+```
 PATCH /api/bookings/:id
 Body: { status: 'approved' | 'denied' }
 Response: Updated booking object
-\`\`\`
+```
 
 ## 🎯 Sample API Calls
 
 ### Book an Appointment
-\`\`\`bash
+```bash
 curl -X POST http://localhost:3000/api/bookings \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -158,26 +158,26 @@ curl -X POST http://localhost:3000/api/bookings \\
     "customerEmail": "john@example.com",
     "reason": "Initial consultation"
   }'
-\`\`\`
+```
 
 ### Approve a Booking
-\`\`\`bash
+```bash
 curl -X PATCH http://localhost:3000/api/bookings/booking_123 \\
   -H "Content-Type: application/json" \\
   -d '{ "status": "approved" }'
-\`\`\`
+```
 
 ## 📋 Demo Data
 
 The application automatically generates:
 - **Time Slots**: Monday-Friday, 9 AM - 5 PM, 30-minute intervals
-- **Sample Bookings**: 3 pre-populated bookings for demonstration
+- **Sample Bookings**: 2 pre-populated bookings for demonstration
 - **Mixed Statuses**: Pending, approved, and denied examples
 
 ## 🔧 Architecture Notes
 
 ### Data Management
-- **In-Memory Storage**: All data stored in JavaScript objects
+- **In-Memory Storage**: All booking data is stored in JSON in storage folder
 - **Automatic Initialization**: Time slots generated on server start
 - **Data Persistence**: Data persists during server session
 - **Conflict Prevention**: Robust double-booking prevention
@@ -186,21 +186,13 @@ The application automatically generates:
 - **Input Validation**: Email format, required fields
 - **Booking Conflicts**: Clear error messages for unavailable slots
 - **Network Errors**: Graceful handling of API failures
-- **User Feedback**: Toast notifications for all actions
+- **User Feedback**: Proper notifications for all actions
 
 ### Performance Features
 - **Live Updates**: Automatic polling every 30 seconds
 - **Optimistic UI**: Immediate feedback on user actions
 - **Responsive Design**: Mobile-first approach
 - **Efficient Filtering**: Client-side filtering for instant results
-
-## 🧪 Testing Strategy
-
-The test suite covers:
-- ✅ Successful booking creation
-- ✅ Double-booking prevention
-- ✅ Booking status updates
-- ✅ Denied slot re-availability
 
 ## 🎨 UI/UX Features
 
@@ -236,4 +228,4 @@ This project demonstrates:
 ---
 
 Built with ❤️ for BloorTech Engineering Assessment
-\`\`\`
+```
