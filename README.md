@@ -30,7 +30,6 @@ A full-stack appointment booking application built with Next.js, React, and Type
 - ✅ **Calendar Sync**: Simulated email/calendar invites (console logs)
 - ✅ **CSV Export**: Download all bookings as CSV file
 - ✅ **Live Updates**: Auto-refresh every 30 seconds
-- ✅ **Basic Tests**: Jest test cases for critical API functions
 
 ## 🛠️ Technology Stack
 
@@ -38,37 +37,49 @@ A full-stack appointment booking application built with Next.js, React, and Type
 - **Styling**: Tailwind CSS, shadcn/ui components
 - **Backend**: Next.js API Routes
 - **Data Storage**: In-memory (JavaScript objects)
-- **Testing**: Jest, React Testing Library
 - **Date Handling**: date-fns
 - **Icons**: Lucide React
 
 ## 📁 Project Structure
 
 ```
-appointment-booking-system/
-├── app/
-│   ├── api/
-│   │   ├── bookings/
-│   │   │   ├── route.ts          # GET, POST /api/bookings
-│   │   │   └── [id]/route.ts     # PATCH /api/bookings/:id
-│   │   └── slots/
-│   │       └── route.ts          # GET /api/slots
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx                  # Main application page
-├── components/
-│   ├── ui/                       # shadcn/ui components
-│   ├── customer-booking.tsx      # Customer booking interface
-│   └── client-dashboard.tsx      # Admin dashboard
-├── lib/
-│   └── data.ts                   # Data management & business logic
-├── __tests__/
-│   └── api/
-│       └── bookings.test.js      # API tests
-├── jest.config.js
-├── jest.setup.js
-├── package.json
-└── README.md
+Directory structure:
+└── appointment_system/
+    ├── README.md
+    ├── components.json
+    ├── jest.config.js
+    ├── jest.setup.js
+    ├── next.config.mjs
+    ├── package.json
+    ├── pnpm-lock.yaml
+    ├── postcss.config.mjs
+    ├── tailwind.config.ts
+    ├── tsconfig.json
+    ├── app/
+    │   ├── globals.css
+    │   ├── layout.tsx
+    │   ├── page.tsx
+    │   └── api/
+    │       ├── bookings/
+    │       │   ├── route.ts
+    │       │   └── [id]/
+    │       │       └── route.ts
+    │       └── slots/
+    │           └── route.ts
+    ├── components/
+    │   ├── client-dashboard.tsx
+    │   ├── customer-booking.tsx
+    │   └── theme-provider.tsx
+    ├── hooks/
+    │   ├── use-mobile.tsx
+    │   └── use-toast.ts
+    ├── lib/
+    │   ├── data.ts
+    │   └── utils.ts
+    ├── storage/
+    │   └── bookings.json
+    └── styles/
+        └── globals.css
 ```
 
 ## 🚦 Getting Started
@@ -222,10 +233,6 @@ This project demonstrates:
 - **Modern React**: Hooks, functional components
 - **API Design**: RESTful endpoints with proper HTTP methods
 - **Error Handling**: Comprehensive validation and error responses
-- **Testing**: Unit tests for critical business logic
 - **Documentation**: Clear README and code comments
 
 ---
-
-Built with ❤️ for BloorTech Engineering Assessment
-```
