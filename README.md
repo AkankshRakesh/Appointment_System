@@ -233,7 +233,6 @@ This project demonstrates:
 - **Modern React**: Hooks, functional components
 - **API Design**: RESTful endpoints with proper HTTP methods
 - **Error Handling**: Comprehensive validation and error responses
-- **Testing**: Unit tests for critical business logic
 - **Documentation**: Clear README and code comments
 
 ---
